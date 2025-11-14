@@ -32,20 +32,20 @@ jobs:
           NEW_ENTRY="$KEY:$HWID:$USER:$EXPIRATION"
           
           # Backup original file
-          cp aber100pro aber100pro.backup
+          cp aservice-whitelisted aservice-whitelisted.backup
           
           # Remove old entry if exists and add new one
-          grep -v "^$KEY:" aber100pro.backup > aber100pro.temp || true
-          echo "$NEW_ENTRY" >> aber100pro.temp
-          mv aber100pro.temp aber100pro
+          grep -v "^$KEY:" aservice-whitelisted.backup > aservice-whitelisted.temp || true
+          echo "$NEW_ENTRY" >> aservice-whitelisted.temp
+          mv aservice-whitelisted.temp aservice-whitelisted
           
           echo "📊 Changes made:"
-          diff -u aber100pro.backup aber100pro || true
+          diff -u aservice-whitelisted.backup aservice-whitelisted || true
 
       - name: 💾 Commit and push changes
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add aber100pro
+          git add aservice-whitelisted
           git diff --staged --quiet || git commit -m "🔧 Update ${{ github.event.client_payload.key }} - Expires: ${{ github.event.client_payload.expiration }}"
           git push
